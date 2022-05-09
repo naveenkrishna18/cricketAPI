@@ -23,12 +23,22 @@ const battingStatSchema = { No :Number,
   battingAverage: Number
 }
 
-const playerProfile = mongoose.model("playerProfile",playerProfileSchema);
-const battingStat = mongoose.model("battingStat",battingStatSchema);
+const bowlingStatSchema = { No: Number,
+    Name: String,
+    ballsBowled: Number,
+    madians: Number,
+    RunsConsumed: Number,
+    wickets: Number,
+    bowlingAverage:Number
+}
 
-app.route("/playerprofile")
+const playerProfileODI = mongoose.model("playerProfile",playerProfileSchema);
+const battingStatODI = mongoose.model("battingStat",battingStatSchema);
+const bowlingStatODI = mongoose.model("bowlingStat",bowlingStatSchema);
+
+app.route("/odi/playerprofile")
 .get(function (req,res) {
-    playerProfile.find(function (err,result) {
+    playerProfileODI.find(function (err,result) {
         if(!err)
         {
             res.send(result); 
@@ -39,10 +49,9 @@ app.route("/playerprofile")
         }  
     });
 });
-
-app.route("/battingstats")
+app.route("/odi/battingstats")
 .get(function (req,res) {
-    battingStat.find(function (err,result) {
+    battingStatODI.find(function (err,result) {
         if(!err)
         {
             res.send(result); 
@@ -53,11 +62,51 @@ app.route("/battingstats")
         }  
     });
 });
-
-app.route("/playerprofile/:playerName")
+app.route("/odi/bowlingstats")
+.get(function (req,res) {
+    bowlingStatODI.find(function (err,result) {
+        if(!err)
+        {
+            res.send(result); 
+        }
+        else
+        {
+            res.send(err);
+        }  
+    });
+});
+app.route("/odi/playerprofile/:playerName")
 .get(function (req,res) {
     
-    playerProfile.findOne({Name: req.params.playerName}, function (err,foundPlayer){
+    playerProfileODI.findOne({Name: req.params.playerName}, function (err,foundPlayer){
+        if(foundPlayer)
+        {
+            res.send(foundPlayer);
+        }
+        else
+        {
+            res.send("No Player Information found");
+        }
+    });
+});
+app.route("/odi/battingstats/:playerName")
+.get(function (req,res) {
+    
+    battingStatODI.findOne({Name: req.params.playerName}, function (err,foundPlayer){
+        if(foundPlayer)
+        {
+            res.send(foundPlayer);
+        }
+        else
+        {
+            res.send("No Player Information found");
+        }
+    });
+});
+app.route("/odi/bowlingstats/:playerName")
+.get(function (req,res) {
+    
+    bowlingStatODI.findOne({Name: req.params.playerName}, function (err,foundPlayer){
         if(foundPlayer)
         {
             res.send(foundPlayer);
@@ -69,23 +118,6 @@ app.route("/playerprofile/:playerName")
     });
     
 })
-
-app.route("/battingstats/:playerName")
-.get(function (req,res) {
-    
-    battingStat.findOne({Name: req.params.playerName}, function (err,foundPlayer){
-        if(foundPlayer)
-        {
-            res.send(foundPlayer);
-        }
-        else
-        {
-            res.send("No Player Information found");
-        }
-    });
-    
-})
-
 app.listen(3000 , function (req,res) {
     console.log("server is running");
 });
