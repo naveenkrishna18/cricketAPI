@@ -1,7 +1,7 @@
 
 # Cricket API
 
-A REST API for getting Information and Statistics about Indian cricketers who have reperesented 
+A REST API for getting Information and Statistics about Indian cricketers who have represented 
 india in the international form of cricket.
 
 This API currently only supports One Day International (ODI) statistics and will be updated 
